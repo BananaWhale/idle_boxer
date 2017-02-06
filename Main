@@ -1,0 +1,755 @@
+--
+nanner_a = "Dropbox:idlea"
+nanner_b = "Dropbox:idleb_rightb"
+nanner_pa = "Dropbox:leftpa"
+nanner_pb = "Dropbox:leftpb"
+nanner_pc = "Dropbox:rightpa"
+nanner_pd = "Dropbox:rightpb"
+nanner_p2a = "Dropbox:leftpa"
+nanner_p2b = "Dropbox:leftpb"
+nanner_p2c = "Dropbox:rightpa"
+nanner_p2d = "Dropbox:rightpb"
+nanner_la = "Dropbox:lefta"
+nanner_lb = "Dropbox:leftb"
+nanner_lc = "Dropbox:leftc"
+nanner_ra = "Dropbox:righta"
+nanner_rb = "Dropbox:idleb_rightb"
+nanner_rc = "Dropbox:rightc"
+nanner_cla = "Dropbox:leftca"
+nanner_clb = "Dropbox:leftcb"
+nanner_clc = "Dropbox:leftcc"
+nanner_cld = "Dropbox:leftcd"
+nanner_cra = "Dropbox:rightca"
+nanner_crb = "Dropbox:rightcb"
+nanner_crc = "Dropbox:rightcc"
+nanner_crd = "Dropbox:rightcd"
+--
+fire1 = "Dropbox:leftpbf"
+fire2 = "Dropbox:rightpaf"
+fire3 = "Dropbox:rightpbf"
+--
+banana = "Dropbox:banana"
+pbag_a = "Dropbox:punchingbaga"
+pbag_b = "Dropbox:punchingbagb"
+level_1 = "Dropbox:batllehause"
+bbackground = "Dropbox:background"
+scoreboard = "Dropbox:score"
+weight1 = "Dropbox:weights1"
+--
+idle_a = 0
+idle_b = 2
+punch_a = 3
+punch_b = 4
+punch_c = 5
+punch_d = 6
+punch_2a = 7
+punch_2b = 8
+punch_2c = 9
+punch_2d = 10
+left_a = 11
+left_b = 12
+left_c = 13
+left_d = 14
+right_a = 15
+right_b = 16
+right_c = 17
+right_d = 18
+curl_la = 19
+curl_lb = 20
+curl_lc = 21
+curl_ld = 22
+curl_ra = 23
+curl_rb = 24
+curl_rc = 25
+curl_rd = 26
+--
+------------     boxing test      ------------
+---
+function setup()  
+---main clock    
+   delay = 0
+---score
+   punches = 0
+   score = 0 
+---touch check
+   tdelay = 0
+   hs = 0
+   qs = 0
+---idle clock
+   idle = 0
+   iclock = 0
+---walk
+   wander = 0
+   val = 1
+   walk = 0
+   xx = 1
+---return check
+   idle_x = 0
+---return clock
+   idlelag = 0
+   idleframes = 0
+---items
+   weights = 1
+---item interactions
+   radio = 0 
+   ipbag = 0
+   fweights = 0
+   lweights = 0
+---attacks
+   punch2 = 0
+---workouts
+   ipunch = 0
+   curls = 0
+---workout tracker
+   workout = 0
+   reps = 0
+   sets = 0 
+---idle punching bag animation
+   ipbag_a = 0
+---sprites
+   player = idle_a
+   pbag = pbag_a
+---device
+   banana_size = vec2(576,688)
+   banana_pos = vec2(WIDTH/2, HEIGHT/2)  
+---
+----------------------------------------------
+---
+mclock = 0
+mcount = 2
+display = "soy"
+pool = 0
+
+   message = { soy =" Eres un perdedor bebe",
+               bike =" You're bike has been stolen",
+               falcon =" Paunch",
+               jules =" English motherfucker, do you speak it?",
+               bo = " Narrator: The Toast never fought again. He picked up some peanut butter \n and became a recess snack for a six-year-old girl in Palukaville, New Jersey. \n The end.",
+               link = " Nanner: ...",
+               angel = " ~Wer zu Lebzeit gut auf Erden?",
+               day_o = " ~I must declare my heart is there \n ~Though I've been from Maine to Mexico",
+               cheif = " Hey, to error is human."}
+end
+--fruit = "gear second"
+-- mika = { 1 = " Boum boum boum \n Meme les americains comprennent", 2 = " Boum boum \n Boum boum" 3 = "Boum boum boum" 4 = " Qu'importe l'endroit ou le contexte \n On a toujours un bon prétexte"}
+--
+----------------------------------------------
+function draw()
+---
+   --supportedOrientations(LANDSCAPE_ANY)
+   displayMode(FULLSCREEN) 
+   --noFill()
+   noSmooth()
+   noStroke()
+   pushStyle()  
+---draw clocks
+   clock()   
+---
+------------      background      ------------
+---
+     background(210, 146, 146, 255)
+---console
+     sprite(bbackground, banana_pos.x, banana_pos.y, banana_size.x, banana_size.y)   
+     sprite(banana, banana_pos.x, banana_pos.y, banana_size.x, banana_size.y)   
+     sprite(scoreboard, banana_pos.x, banana_pos.y, banana_size.x, banana_size.y)   
+     sprite(level_1, banana_pos.x, banana_pos.y, banana_size.x, banana_size.y) 
+--- 
+------------        items         ------------ 
+---weights
+     if weights == 1
+   then sprite(weight1, banana_pos.x, banana_pos.y, banana_size.x, banana_size.y) 
+    end
+---
+------------      animations      ------------
+---     
+------idle    
+       if player == idle_a 
+     then sprite(nanner_a, banana_pos.x, banana_pos.y, banana_size.x, banana_size.y)
+   elseif player == idle_b
+     then sprite(nanner_b, banana_pos.x, banana_pos.y, banana_size.x, banana_size.y)
+------left punch
+   elseif player == punch_a 
+     then sprite(nanner_pa, banana_pos.x, banana_pos.y, banana_size.x, banana_size.y)
+   elseif player == punch_b 
+     then sprite(nanner_pb, banana_pos.x, banana_pos.y, banana_size.x, banana_size.y) 
+------left punch 2
+   elseif player == punch_2a 
+     then sprite(nanner_pa, banana_pos.x, banana_pos.y, banana_size.x, banana_size.y)
+   elseif player == punch_2b 
+     then sprite(nanner_p2b, banana_pos.x, banana_pos.y, banana_size.x, banana_size.y)
+          sprite(fire1, banana_pos.x, banana_pos.y, banana_size.x, banana_size.y)
+      end
+------punching bag   
+       if pbag == pbag_a 
+     then sprite(pbag_a, banana_pos.x, banana_pos.y, banana_size.x, banana_size.y)
+   elseif pbag == pbag_b 
+     then sprite(pbag_b, banana_pos.x, banana_pos.y, banana_size.x, banana_size.y)
+      end
+------right punch
+       if player == punch_c 
+     then sprite(nanner_pc, banana_pos.x, banana_pos.y, banana_size.x, banana_size.y)
+   elseif player == punch_d 
+     then sprite(nanner_pd, banana_pos.x, banana_pos.y, banana_size.x, banana_size.y)
+------right punch 2
+   elseif player == punch_2c 
+     then sprite(nanner_p2c, banana_pos.x, banana_pos.y, banana_size.x, banana_size.y) 
+          sprite(fire2, banana_pos.x, banana_pos.y, banana_size.x, banana_size.y)
+   elseif player == punch_2d 
+     then sprite(nanner_p2d, banana_pos.x, banana_pos.y, banana_size.x, banana_size.y)
+          sprite(fire3, banana_pos.x, banana_pos.y, banana_size.x, banana_size.y)
+------left walk
+   elseif player == left_a 
+     then sprite(nanner_la, banana_pos.x + 56*val, banana_pos.y, banana_size.x, banana_size.y)
+   elseif player == left_b
+     then sprite(nanner_lb, banana_pos.x + 56*val, banana_pos.y, banana_size.x, banana_size.y)
+   elseif player == left_c 
+     then sprite(nanner_lc, banana_pos.x + 56*val, banana_pos.y, banana_size.x, banana_size.y)
+------right walk
+    elseif player == right_a 
+      then sprite(nanner_ra, banana_pos.x + 56*val, banana_pos.y, banana_size.x, banana_size.y)
+    elseif player == right_b 
+      then sprite(nanner_rb, banana_pos.x + 56*val, banana_pos.y, banana_size.x, banana_size.y) 
+    elseif player == right_c then
+           sprite(nanner_rc, banana_pos.x + 56*val, banana_pos.y, banana_size.x, banana_size.y)
+------left curls
+    elseif player == curl_la 
+      then sprite(nanner_cla, banana_pos.x, banana_pos.y, banana_size.x, banana_size.y)
+    elseif player == curl_lb 
+      then sprite(nanner_clb, banana_pos.x, banana_pos.y, banana_size.x, banana_size.y)
+    elseif player == curl_lc
+      then sprite(nanner_clc, banana_pos.x, banana_pos.y, banana_size.x, banana_size.y)
+    elseif player == curl_ld 
+      then sprite(nanner_cld, banana_pos.x, banana_pos.y, banana_size.x, banana_size.y)
+------right curls
+    elseif player == curl_ra 
+      then sprite(nanner_cra, banana_pos.x, banana_pos.y, banana_size.x, banana_size.y)
+    elseif player == curl_rb 
+      then sprite(nanner_crb, banana_pos.x, banana_pos.y, banana_size.x, banana_size.y)
+    elseif player == curl_rc 
+      then sprite(nanner_crc, banana_pos.x, banana_pos.y, banana_size.x, banana_size.y) 
+    elseif player == curl_rd 
+      then sprite(nanner_crd, banana_pos.x, banana_pos.y, banana_size.x, banana_size.y)
+       end
+---
+---score placeholder
+---    
+   font("Futura-Medium")
+   fontSize(50)
+   fill(0, 0, 0, 255) 
+   text(score,WIDTH/2-30,HEIGHT/2+268)
+---   
+------------      walk cycle      ------------
+---    
+       if wander == 1 
+     then player = left_a 
+   elseif wander == 2 
+     then player = left_b
+   elseif wander == 3 
+     then player = left_c
+   elseif wander == 4
+     then player = left_b
+   elseif wander == 5 
+     then player = right_a
+   elseif wander == 6 
+     then player = right_b
+   elseif wander == 7
+     then player = right_c 
+   elseif wander == 8
+     then player = right_b 
+   elseif wander == 9
+     then player = right_a
+   elseif wander == 10 
+     then player = right_b
+   elseif wander == 11 
+     then player = left_c
+   elseif wander == 12 
+     then player = left_b
+      end
+---loop
+     if wander > 12
+   then wander = 1
+    end
+---   
+------------       workouts        ------------ 
+---    
+---checks
+     if walk == 20 
+   then ipbag = math.random(1,6)
+        fweights = math.random(1,6)
+   end   
+     if idle == 9
+    and delay == 50
+   then ipbag = math.random(1,10)
+    end
+---            
+------idle punch begin
+       if wander == 9
+      and ipbag == 1
+     then player = punch_a
+          workout = 1 
+          wander = 0 
+          ipunch = 1
+   elseif wander == 9
+      and ipbag == 2 
+     then player = punch_b
+          workout = 1
+          wander = 0 
+          ipunch = 1
+      end
+------idle punch cycle
+       if player == punch_a 
+      and ipunch == 1 
+      and delay == 15
+     then player = punch_b
+          ipbag_a = math.random(1,10)
+   elseif player == punch_b
+      and ipunch == 1
+      and delay == 30 
+     then player = punch_c 
+   elseif player == punch_c
+      and ipunch == 1 
+      and delay == 45
+     then player = punch_d
+          ipbag_a = math.randomseed(1,10)
+   elseif player == punch_d
+      and ipunch == 1
+      and delay == 60 
+     then player = punch_a
+      end
+------idle punching bag animation
+      if ipbag_a == 1 
+     then pbag = pbag_b
+   elseif ipbag_a == 1 
+     then pbag = pbag_b
+      end
+------idle punch counter    
+     if delay == 15
+    and ipunch > 0 
+     or delay == 45 
+    and ipunch > 0 
+   then sets = sets +1
+    end
+------idle punch end   
+     if sets > 25 
+    and delay == 10 
+   then sets = 0
+        player = idle_b
+        idle = 8
+        workout = 0 
+        wander = 0 
+        tdelay = 0
+        hs = 0 
+        qs = 0 
+        val = 1
+        xx = 1
+        ipunches = 0
+    end
+------curl begin
+       if wander == 3
+      and fweights == 1
+     then player = curl_la
+          workout = 1 
+          wander = 0
+          curl = 1
+          weights = 0
+   elseif wander == 3 
+      and fweights == 2 
+     then player = curl_ra
+          workout = 1 
+          wander = 0
+          curl = 1
+          weights = 0
+      end
+------left curl    
+     if player == curl_la
+    and delay == 30
+   then player = curl_lb
+    end
+     if player == curl_lb
+    and delay == 60 
+   then player = curl_lc
+    end
+     if player == curl_lc
+    and delay == 30 
+   then player = curl_ld
+    end
+     if player == curl_ld
+    and delay == 15
+   then player = curl_la
+    end
+------right curl
+     if player == curl_ra
+    and delay == 30 
+   then player = curl_rb
+    end
+     if player == curl_rb 
+    and delay == 60 
+   then player = curl_rc
+    end
+     if player == curl_rc
+    and delay == 30 
+   then player = curl_rd
+    end
+     if player == curl_rd 
+    and delay == 15
+   then player = curl_ra
+    end
+------curl sets
+       if delay == 25 
+      and player == curl_la
+     then sets = sets + 1 
+   elseif delay == 25 
+      and player == curl_ra
+     then sets = sets +1
+      end
+------curl reps
+       if sets == 5
+      and player == curl_la 
+     then sets = 0
+          reps = reps + 1
+          player = curl_ra
+   elseif
+          sets == 5 
+      and player == curl_ra
+     then
+          sets = 0
+          reps = reps + 1
+          player = curl_la
+      end
+------curl end
+     if reps == 2
+    and curls == 1
+   then reps = 0
+        workout = 0
+        walk = 0
+        xx = -1
+        val = -3
+        wander = 5
+        curl = 0
+        weights = 1
+    end
+---
+----------------------------------------------
+---     
+   font("Futura-Medium")
+   fontSize(25)
+   fill(0, 0, 0, 255)  
+   textMode(CORNER)
+   text(message[display],WIDTH/2 - 250, HEIGHT/2 - 300)
+
+       if pool == 1
+     then display = "soy"
+   elseif pool == 2
+     then display = "bike"
+   elseif pool == 3
+     then display = "falcon"
+   elseif pool == 4
+     then display = "jules"
+   elseif pool == 5
+     then display = "bo"
+   elseif pool == 6
+     then display = "link"
+   elseif pool == 7
+     then display = "angel"
+   elseif pool == 8
+     then display = "day_o"
+   elseif pool == 9
+     then display = "cheif"
+   elseif pool == 10
+     then display = "fruit"
+    end
+---unlock
+       if score == 1
+     then mcount = 3
+   elseif score == 4
+     then mcount = 9
+   elseif score >= 15
+     then mcount = 10
+end
+---clock
+   mclock = mclock + 1
+     if mclock > 240
+   then mclock = 0
+        pool = math.random(1,mcount)  
+    end
+     if score >= 15 
+   then message["fruit"] = "Gear Second"
+    end
+end
+------------         touch        ------------ 
+function touched(touch)
+---
+------------      idle cancel     ------------ 
+---
+------clear  
+     if touch.state == BEGAN
+   then idle = 0 
+        wander = 0 
+        tdelay = 0
+        hs = 0 
+        qs = 0 
+    end 
+------wander 5    
+       if touch.state == BEGAN
+      and wander == 5 
+     then walk = 0
+          xx = -1
+          idlelag = -6
+          idle_x = 1
+------wander 4, 6
+   elseif touch.state == BEGAN
+      and wander == 4 
+       or touch.state == BEGAN
+      and wander == 6 
+     then walk = 0
+          xx = -1
+          idlelag = -5
+          idle_x = 1
+-------wander 3, 7
+    elseif touch.state == BEGAN
+      and wander == 3
+       or touch.state == BEGAN
+      and wander == 7
+     then walk = 0
+          xx = -1
+          idlelag = -4
+          idle_x = 1  
+------wander 2, 8 
+   elseif touch.state == BEGAN
+      and wander == 2
+       or touch.state == BEGAN
+      and wander == 8
+     then walk = 0
+          xx = -1
+          idlelag = -3
+          idle_x = 1
+------wander 1, 9   
+   elseif touch.state == BEGAN 
+      and wander == 1
+       or touch.state == BEGAN
+      and wander == 9 
+     then walk = 0
+          xx = 1
+          idlelag = -1
+          idle_x = 1 
+------wander 10, 12
+   elseif touch.state == BEGAN 
+      and wander == 10 
+       or touch.state == BEGAN
+      and wander == 12 
+     then walk = 0
+          xx = 1
+          idlelag = 3
+          idle_x = 1
+------wander 11  
+   elseif touch.state == BEGAN
+      and wander == 11 
+     then walk = 0
+          xx = 1
+          idlelag = 4
+          idle_x = 1
+          ipbag = 0
+      end   
+------curls
+     if touch.state == BEGAN
+    and curl == 1 
+   then curl = 0
+        workout = 0
+        walk = 0
+        xx = 1
+        idlelag = -4
+        idle_x = 1
+        weights = 1
+    end
+---
+------------      punch cycle     ------------
+---punch 1
+       if touch.state == BEGAN
+      and player == idle_a
+     then player = punch_a 
+   elseif touch.state == BEGAN 
+      and player == idle_b 
+     then player = punch_c 
+   elseif touch.state == BEGAN
+      and player == punch_d
+     then player = punch_a
+   elseif touch.state == ENDED
+      and player == punch_a
+     then player = punch_b
+          punches = punches +1
+   elseif touch.state == BEGAN 
+      and player == punch_b
+     then player = punch_c
+   elseif touch.state == ENDED
+      and player == punch_c
+     then player = punch_d
+          punches = punches +1
+---punch 2
+   elseif touch.state == BEGAN
+      and player == punch_2d 
+     then player = punch_2a
+   elseif touch.state == ENDED
+      and player == punch_2a
+     then player = punch_2b
+          punches = punches +3
+   elseif touch.state == BEGAN
+      and player == punch_2b
+     then player = punch_2c
+   elseif touch.state == ENDED
+      and player == punch_2c
+     then player = punch_2d
+          punches = punches + 3
+      end
+---
+------------        score         ------------
+---       
+------score
+      if punches >= 15 then
+      score = score + 1
+      punches = 0 
+      pbag = pbag_b
+      end 
+---punch 2 trigger
+       if punches >= 14
+      and score >= 15
+      and player == punch_c
+     then player = punch_2b   
+   elseif punches >= 14
+      and score >= 15
+      and player == punch_c
+     then player = punch_2b   
+      end
+end
+---
+----------------------------------------------
+---
+------------        clocks        ------------
+function clock()
+---
+------main clock              
+        delay = delay + 1
+     if delay > 60
+   then delay = 0
+    end  
+------punching bag animation 2/2
+     if delay == 30
+     or delay == 60
+   then pbag = pbag_a
+    end
+
+------touch clock    
+        tdelay = tdelay + 1
+     if tdelay > 60
+   then tdelay = 0
+      end
+------half second
+     if tdelay == 30 
+   then hs = hs + 1
+    end
+------quarter second
+     if tdelay == 15
+   then qs = qs + 1
+    end
+------touch check punches    
+       if player == punch_b
+      and hs == 1 
+     then player = idle_a 
+   elseif player == punch_d
+      and hs == 1
+     then player = idle_b
+      end
+------touch check punches 2
+       if player == punch_2b 
+      and qs == 1 
+     then player = idle_a
+   elseif player == punch_2d and
+      qs == 1 then
+      player = idle_b
+      end     
+------idle check clock
+     if tdelay == 60 
+   then idle = idle + 1
+    end
+------idle clock
+        iclock = iclock + 1
+     if iclock > 15
+   then iclock = 0
+      end
+------idle stand animate
+       if player == idle_a
+      and iclock == 15 
+     then player = idle_b
+   elseif player == idle_b
+      and iclock == 15
+     then player = idle_a
+      end   
+------walk clock
+     if idle > 9
+    and workout == 0
+   then walk = walk +1
+    end
+------idle move
+     if walk > 20
+   then walk = 0
+        wander = wander + 1
+        val = val - xx
+     if val < -3 or val > 1
+   then xx=xx*-1
+    end
+    end    
+------return start
+     if idle_x == 1
+   then idleframes = idleframes + 1
+    end
+     if idleframes > 20
+   then idleframes = 0
+    end
+------return clock
+       if idlelag < 0
+      and idleframes == 20
+     then idlelag = idlelag + 1
+   elseif idlelag > 0
+      and idleframes == 20
+     then idlelag = idlelag - 1
+      end 
+------return left  
+       if idlelag == -6 
+     then player = right_c
+          val = -4  
+   elseif idlelag == -5
+     then player = right_b
+          val = -3 
+   elseif idlelag == -4
+     then player = right_a
+          val = -2 
+   elseif idlelag == -3 
+     then player = right_b
+          val = -1
+   elseif idlelag == -2
+     then player = right_c
+          val = 0 
+   elseif idlelag == -1
+     then player = idle_b
+          idel_x = 0
+          idleframes = 0
+          idlelag = 0
+      end
+------return right
+       if idlelag == 4
+     then player = left_a
+          val = 2 
+   elseif idlelag == 3
+     then player = left_b
+          val = 1
+   elseif idlelag == 2 
+     then player = left_c
+          val = 0
+   elseif idlelag == 1 
+     then player = idle_b
+          idel_x = 0
+          idleframes = 0
+          idlelag = 0
+    end
+end
+---
+----------------------------------------------
